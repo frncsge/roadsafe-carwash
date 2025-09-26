@@ -1,0 +1,48 @@
+#login-form-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#login-form {
+  font-family: "Roboto", sans-serif;
+  width: 20rem;
+  max-width: 90%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#login-form input {
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+#login-form #username {
+  margin-bottom: 1.5rem;
+}
+
+#username,
+#password {
+  border: 1px solid #bababa;
+}
+
+#forgot-password {
+  align-self: flex-end;
+  text-decoration: none;
+}
+
+#login-form label, #forgot-password {
+    font-size: 1rem;
+}
+
+#login-button { 
+  border: none;
+  background-color: #db2b2b;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: white;
+}
