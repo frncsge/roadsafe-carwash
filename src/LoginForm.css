@@ -32,17 +32,38 @@
 #forgot-password {
   align-self: flex-end;
   text-decoration: none;
+  color: #2672e4;
 }
 
-#login-form label, #forgot-password {
-    font-size: 1rem;
+#login-form label,
+#forgot-password {
+  font-size: 0.9rem;
 }
 
-#login-button { 
+#login-button {
   border: none;
   background-color: #db2b2b;
   margin-top: 1.5rem;
   font-weight: 600;
   font-size: 1rem;
   color: white;
+  cursor: pointer;
+}
+
+#login-button:active {
+  background-color: #dd0e0e;
+}
+
+#forgot-password:active {
+  text-decoration: underline;
+}
+
+@media (hover: hover) {
+  #login-button:hover {
+    background-color: #dd0e0e;
+  }
+
+  #forgot-password:hover {
+    text-decoration: underline;
+  }
 }

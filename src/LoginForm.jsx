@@ -8,8 +8,8 @@ function LoginForm() {
         <input id="username" type="text" placeholder="Username" />
         <label htmlFor="password">Password</label>
         <input id="password" type="text" placeholder="Password" />
-        <a id="forgot-password" href="#">Forgot password?</a>
-        <input id="login-button" type="submit" value="LOGIN" />
+        <a id="forgot-password" href="#" tabIndex={0}>Forgot password?</a>
+        <input id="login-button" type="submit" value="LOGIN" tabIndex={0}/>
       </form>
     </div>
   );
