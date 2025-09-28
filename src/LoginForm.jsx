@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaEye } from 'react-icons/fa';
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -56,13 +57,18 @@ function LoginForm() {
           value={username}
         />
         <label htmlFor="password">Password</label>
-        <input
-          onChange={handleInput}
-          id="password"
-          type="password"
-          placeholder="Password"
-          value={password}
-        />
+        <div id="password-container">
+          <input
+            onChange={handleInput}
+            id="password"
+            type="password"
+            placeholder="Password"
+            value={password}
+          />
+          <span id="show-password-icon">
+            <FaEye />
+          </span>
+        </div>
         <a id="forgot-password" href="#" tabIndex={0}>
           Forgot password?
         </a>

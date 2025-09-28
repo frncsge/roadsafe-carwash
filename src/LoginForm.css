@@ -15,24 +15,44 @@
   flex-direction: column;
 }
 
-#login-form input {
-  padding: 1rem;
-  border-radius: 5px;
-}
-
 #login-form #username {
   margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 1px solid #bababa;
 }
 
-#username,
-#password {
+#username:focus {
+  outline: 3px solid rgb(140, 192, 255);
+  outline-offset: 2px;
+}
+
+#password-container {
   border: 1px solid #bababa;
+  border-radius: 5px;
+
+  display: flex;
+  align-items: center;
+}
+
+#password-container:focus-within {
+  outline: 3px solid rgb(140, 192, 255);
+  outline-offset: 2px;
+}
+
+#login-form #password {
+  padding: 1rem;
+  border: none;
+  border-radius: 5px;
+  width: 83%;
+  outline: none;
 }
 
 #forgot-password {
   align-self: flex-end;
   text-decoration: none;
   color: #2672e4;
+  border-radius: 5px;
 }
 
 #login-form label,
@@ -42,12 +62,19 @@
 
 #login-button {
   border: none;
+  border-radius: 5px;
   background-color: #db2b2b;
+  padding: 1rem;
   margin-top: 1.5rem;
   font-weight: 600;
   font-size: 1rem;
   color: white;
   cursor: pointer;
+}
+
+#login-button:focus {
+  outline: 3px solid rgb(140, 192, 255);
+  outline-offset: 2px;
 }
 
 #login-button:active {
@@ -58,6 +85,11 @@
   text-decoration: underline;
 }
 
+#forgot-password:focus {
+  outline: 3px solid rgb(140, 192, 255);
+  outline-offset: 2px;
+}
+
 @media (hover: hover) {
   #login-button:hover {
     background-color: #d00909;
@@ -66,4 +98,8 @@
   #forgot-password:hover {
     text-decoration: underline;
   }
+}
+
+#show-password-icon {
+  color: #bababa;
 }
