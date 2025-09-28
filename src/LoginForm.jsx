@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(true);
+  const [successLogin, setSuccessLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   function handleInput(event) {
     const inputType = event.target.id;
@@ -31,16 +32,16 @@ function LoginForm() {
           password,
         }),
       });
+      const data = await response.json();
 
       //checks if server response is ok (200-299).
       if (response.ok) {
-        const data = await response.json();
         console.log("Server response:", data);
-
         //reset username and password states.
         setUsername("");
         setPassword("");
       }
+      setSuccessLogin(data.success);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -48,13 +49,18 @@ function LoginForm() {
 
   return (
     <div id="login-form-container">
+      <img id="login-logo" src="../public/roadsafe logo.png" alt="Roadsafe Logo" />
       <form onSubmit={handleFormSubmit} id="login-form">
+        {!successLogin ? (
+          <span id="login-message">*Invalid username or password!</span>
+        ) : null}
         <label htmlFor="username">Username</label>
         <input
           onChange={handleInput}
           id="username"
           type="text"
           placeholder="Username"
+          required
           value={username}
         />
         <label htmlFor="password">Password</label>
@@ -64,9 +70,13 @@ function LoginForm() {
             id="password"
             type={showPassword ? "text" : "password"}
             placeholder="Password"
+            required
             value={password}
           />
-          <span onClick={() => setShowPassword(!showPassword)} id="show-password-icon">
+          <span
+            onClick={() => setShowPassword(!showPassword)}
+            id="show-password-icon"
+          >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
         </div>

@@ -6,6 +6,11 @@
   justify-content: center;
 }
 
+#login-form-container {
+  display: flex;
+  flex-direction: column;
+}
+
 #login-form {
   font-family: "Roboto", sans-serif;
   width: 20rem;
@@ -103,4 +108,16 @@
 #show-password-icon {
   color: #bababa;
   cursor: pointer;
+}
+
+#login-message {
+  align-self: center;
+  margin-bottom: 0.5rem;
+  color: red;
+  font-style: italic;
+}
+
+#login-logo {
+  width: 15rem;
+  margin-bottom: 1rem;
 }
