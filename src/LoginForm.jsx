@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { FaEye } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(true);
 
   function handleInput(event) {
     const inputType = event.target.id;
@@ -61,12 +62,12 @@ function LoginForm() {
           <input
             onChange={handleInput}
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Password"
             value={password}
           />
-          <span id="show-password-icon">
-            <FaEye />
+          <span onClick={() => setShowPassword(!showPassword)} id="show-password-icon">
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
         </div>
         <a id="forgot-password" href="#" tabIndex={0}>

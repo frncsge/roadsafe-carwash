@@ -102,4 +102,5 @@
 
 #show-password-icon {
   color: #bababa;
+  cursor: pointer;
 }
