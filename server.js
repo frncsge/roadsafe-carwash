@@ -3,6 +3,7 @@ import pg from "pg";
 import dotenv from "dotenv";
 import cors from "cors";
 import bcrypt from "bcrypt";
+import session from "express-session";
 
 dotenv.config();
 
