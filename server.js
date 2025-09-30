@@ -63,11 +63,9 @@ app.post("/api/admin/login", (req, res, next) => {
 
       return res
         .status(200)
-        .json({ success: true, message: "Login successful.", admin });
+        .json({ success: true, message: "Login successful." }); //passing admin is not needed here
     });
-  })
-  
-  (req, res, next);
+  })(req, res, next);
 });
 
 app.get("/api/auth/validation", (req, res) => {
@@ -105,6 +103,17 @@ passport.use(
     }
   })
 );
+
+//for giving the credentials of the logged in user/admin.
+app.get("/api/admin/me", (req, res) => {
+  //check if session exists.
+  if (req.isAuthenticated()) {
+    //return the admin through req.user (from the deserializeUser)
+    return res.json(req.user);
+  }
+
+  res.sendStatus(401); //unauthorized, or not logged in yet.
+});
 
 passport.serializeUser((admin, done) => {
   return done(null, admin);
