@@ -45,7 +45,7 @@ function LoginForm() {
         setUsername("");
         setPassword("");
 
-        if(data.success){
+        if (data.success) {
           navigate("/admin/dashboard");
         }
       }

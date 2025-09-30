@@ -72,6 +72,17 @@ app.get("/api/auth/validation", (req, res) => {
   res.json({ isLoggedIn: req.isAuthenticated() }); //sends true or false
 });
 
+//for giving the credentials of the logged in user/admin.
+app.get("/api/admin/me", (req, res) => {
+  //check if session exists.
+  if (req.isAuthenticated()) {
+    //return the admin through req.user (from the deserializeUser)
+    return res.json(req.user);
+  }
+
+  res.sendStatus(401); //unauthorized, or not logged in yet.
+});
+
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
@@ -103,17 +114,6 @@ passport.use(
     }
   })
 );
-
-//for giving the credentials of the logged in user/admin.
-app.get("/api/admin/me", (req, res) => {
-  //check if session exists.
-  if (req.isAuthenticated()) {
-    //return the admin through req.user (from the deserializeUser)
-    return res.json(req.user);
-  }
-
-  res.sendStatus(401); //unauthorized, or not logged in yet.
-});
 
 passport.serializeUser((admin, done) => {
   return done(null, admin);
