@@ -12,7 +12,7 @@ function ProtectedRoute({ children }) {
       try {
         const response = await fetch("/api/auth/validation", {
           method: "GET",
-          credentials: "include", //isend apil ang session cookie sa fetch.
+          credentials: "include", //Send the cookies along with this request, even if it’s cross-origin.
         });
 
         const data = await response.json(); //parse the json that came with the fetch back into a JS object.

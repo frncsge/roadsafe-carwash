@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function LoginForm() {
@@ -49,7 +49,7 @@ function LoginForm() {
 
   return (
     <div id="login-form-container">
-      <img id="login-logo" src="../public/roadsafe logo.png" alt="Roadsafe Logo" />
+      <img id="login-logo" src="/roadsafe logo.png" alt="Roadsafe Logo" />
       <form onSubmit={handleFormSubmit} id="login-form">
         {!successLogin ? (
           <span id="login-message">*Invalid username or password!</span>

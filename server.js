@@ -64,6 +64,10 @@ app.post("/api/admin/login", async (req, res) => {
   }
 });
 
+app.get("/api/auth/validation", (req, res) => {
+  res.json({ isLoggedIn: req.isAuthenticated() }); //sends true or false
+});
+
 app.listen(port, () => {
   console.log("Server listening on port", port);
 });
