@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function Dashboard() {
-  const navigate = useNavigate();
   const [admin, setAdmin] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAdmin() {
@@ -17,22 +17,24 @@ function Dashboard() {
           const adminObject = await response.json();
           setAdmin(adminObject);
         } else if (response.status === 401) {
-          navigate("/admin/login"); //redirect to login page.
+          setAdmin(null);
         }
       } catch (error) {
         console.error(error);
-        navigate("/admin/login"); //fallback
-      } 
+        setAdmin(null);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     fetchAdmin();
   }, []);
 
-  if (!admin) {
+  if (isLoading) {
     return <h1>Loading...</h1>; //temporary 🙏
   }
 
-  return <h1>I am {admin.admin_name}. hello 🔥</h1>;
+  return admin ? <h1>I am {admin.admin_name}. hello 🔥</h1> : <Navigate to="/admin/login"/>;
 }
 
 export default Dashboard;

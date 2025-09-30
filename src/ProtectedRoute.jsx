@@ -3,8 +3,8 @@ import { Navigate } from "react-router-dom";
 
 //component for checking if user is already logged in.
 function ProtectedRoute({ children }) {
-  const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   //runs on mount and for fetching data from the express server to check if user is logged in.
   useEffect(() => {
@@ -15,12 +15,15 @@ function ProtectedRoute({ children }) {
           credentials: "include", //Send the cookies along with this request, even if it’s cross-origin.
         });
 
-        const data = await response.json(); //parse the json that came with the fetch back into a JS object.
-        setIsLoggedIn(data.isLoggedIn); //true or false.
+        if(response.ok){
+          setIsLoggedIn(true);
+        } else if(response.status === 401){
+          setIsLoggedIn(false)
+        }
       } catch (error) {
         console.error(error);
         setIsLoggedIn(false);
-      } finally { //this run after either the try or catch blocks. 
+      } finally {
         setIsLoading(false);
       }
     }
@@ -32,7 +35,7 @@ function ProtectedRoute({ children }) {
     return <h1>Loading...</h1>; //temporary
   }
 
-  return isLoggedIn ? children : <Navigate to="/admin/login" />;
+  return isLoggedIn ? children : <Navigate to="/admin/login"/>;
 }
 
 export default ProtectedRoute;
