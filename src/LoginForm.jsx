@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loginMessage, setLoginMessage] = useState("");
   const [successLogin, setSuccessLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -31,6 +34,7 @@ function LoginForm() {
           username,
           password,
         }),
+        credentials: "include", // important for Passport session
       });
       const data = await response.json();
 
@@ -40,8 +44,13 @@ function LoginForm() {
         //reset username and password states.
         setUsername("");
         setPassword("");
+
+        if(data.success){
+          navigate("/admin/dashboard");
+        }
       }
       setSuccessLogin(data.success);
+      setLoginMessage(data.message);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -49,11 +58,9 @@ function LoginForm() {
 
   return (
     <div id="login-form-container">
-      <img id="login-logo" src="../public/roadsafe logo.png" alt="Roadsafe Logo" />
+      <img id="login-logo" src="/roadsafe logo.png" alt="Roadsafe Logo" />
       <form onSubmit={handleFormSubmit} id="login-form">
-        {!successLogin ? (
-          <span id="login-message">*Invalid username or password!</span>
-        ) : null}
+        {!successLogin ? <span id="login-message">{loginMessage}</span> : null}
         <label htmlFor="username">Username</label>
         <input
           onChange={handleInput}
