@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import session from "express-session";
+import passport from "passport";
 
 dotenv.config();
 
@@ -18,6 +19,16 @@ const db = new pg.Client({
 });
 db.connect();
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(cors()); //i need to change this before deployment !!!
 app.use(express.json());
 
@@ -27,7 +38,8 @@ app.post("/api/admin/login", async (req, res) => {
   const result = await db.query("SELECT * FROM admin WHERE username = $1", [
     username,
   ]);
-  if (result.rows.length > 0) { //check if admin got retrieved.
+  if (result.rows.length > 0) {
+    //check if admin got retrieved.
     const admin = result.rows[0];
     const storedHashedPassword = admin.password_hash;
 
@@ -44,7 +56,8 @@ app.post("/api/admin/login", async (req, res) => {
           .json({ success: false, message: "Invalid username or password" });
       }
     });
-  } else { //if not retrieved, send back invalid message.
+  } else {
+    //if not retrieved, send back invalid message.
     res
       .status(401)
       .json({ success: false, message: "Invalid username or password" });
