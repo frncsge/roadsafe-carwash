@@ -10,7 +10,7 @@ function ProtectedRoute({ children }) {
   useEffect(() => {
     async function checkSession() {
       try {
-        const response = await fetch("/api/auth/validation", {
+        const response = await fetch("http://localhost:3000/api/auth/validation", {
           method: "GET",
           credentials: "include", //Send the cookies along with this request, even if it’s cross-origin.
         });
