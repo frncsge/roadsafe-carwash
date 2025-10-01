@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
-import TopBar from "./TopBar";
+import { MdInbox } from "react-icons/md";
 
 function Dashboard() {
   const [admin, setAdmin] = useState(null);
@@ -36,15 +36,13 @@ function Dashboard() {
     return <LoadingScreen />;
   }
 
-  if (admin) {
-    return (
-      <div id="dashboard-container">
-        <TopBar />
-      </div>
-    );
-  } else {
-    <Navigate to="/admin/login" />;
+  if(!admin) {
+    return <Navigate to='/admin/login'/>;
   }
+
+  return (
+    <main></main>
+  )
 }
 
 export default Dashboard;

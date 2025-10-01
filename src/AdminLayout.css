@@ -1,0 +1,22 @@
+#admin-layout {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 300px 1fr;
+    grid-template-areas: 
+        "topbar topbar"
+        "sidebar main";
+    height: 100vh; 
+}
+
+/* assign the areas based on the grid-template-areas */
+#admin-layout > :nth-child(1) {
+    grid-area: topbar;
+}
+
+#admin-layout > :nth-child(2) {
+    grid-area: sidebar;
+}
+
+#admin-layout > :nth-child(3) {
+    grid-area: main;
+}
