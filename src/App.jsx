@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
-import LoginForm from "./LoginForm";
-import Dashboard from "./Dashboard";
-import LandingPage from "./LandingPage";
-import AdminLayout from "./AdminLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
+import LoginForm from "./components/LoginForm/LoginForm";
+import Dashboard from "./components/Dashboard/Dashboard";
+import LandingPage from "./components/LandingPage/LandingPage";
+import AdminLayout from "./components/AdminLayout/AdminLayout";
+
+
 
 function App() {
   return (

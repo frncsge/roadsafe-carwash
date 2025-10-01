@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import LoadingScreen from "./LoadingScreen";
-import { MdInbox } from "react-icons/md";
+import LoadingScreen from "../LoadingScreen/LoadingScreen";
 
 function Dashboard() {
   const [admin, setAdmin] = useState(null);
@@ -41,7 +40,9 @@ function Dashboard() {
   }
 
   return (
-    <main></main>
+    <main id="dashboard">
+      
+    </main>
   )
 }
 

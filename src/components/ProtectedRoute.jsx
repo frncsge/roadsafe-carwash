@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import LoadingScreen from "./LoadingScreen";
+import LoadingScreen from "./LoadingScreen/LoadingScreen";
 
 //component for checking if user is already logged in.
 function ProtectedRoute({ children }) {
