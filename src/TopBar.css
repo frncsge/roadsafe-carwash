@@ -1,0 +1,56 @@
+#top-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.3rem;
+}
+
+.top-bar-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+#menu:active {
+    background-color: #dededeb9;
+}
+
+@media (hover: hover){
+    #menu:hover {
+        background-color: #dededeb9;
+    }
+}
+
+#logo {
+    width: 13rem;
+    cursor: pointer;
+}
+
+#admin-name {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9rem;
+}
+
+#admin-profile {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(42, 111, 215);
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.5rem;
+    color: white;
+}

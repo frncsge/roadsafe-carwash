@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
+import TopBar from "./TopBar";
 
 function Dashboard() {
   const [admin, setAdmin] = useState(null);
@@ -35,7 +36,15 @@ function Dashboard() {
     return <LoadingScreen />;
   }
 
-  return admin ? <h1>I am {admin.admin_name}. hello 🔥</h1> : <Navigate to="/admin/login"/>;
+  if (admin) {
+    return (
+      <div id="dashboard-container">
+        <TopBar />
+      </div>
+    );
+  } else {
+    <Navigate to="/admin/login" />;
+  }
 }
 
 export default Dashboard;
