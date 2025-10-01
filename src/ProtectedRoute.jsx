@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import LoadingScreen from "./LoadingScreen";
 
 //component for checking if user is already logged in.
 function ProtectedRoute({ children }) {
@@ -32,7 +33,7 @@ function ProtectedRoute({ children }) {
   }, []);
 
   if(isLoading){
-    return <h1>Loading...</h1>; //temporary
+    return <LoadingScreen />;
   }
 
   return isLoggedIn ? children : <Navigate to="/admin/login"/>;

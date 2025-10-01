@@ -1,7 +1,7 @@
-import React from "react";
+import LoadingScreen from "./LoadingScreen";
 
 function LandingPage(){
-    return <h1>I am the landing page.</h1>
+    return <h1>Landing page voi.</h1>
 }
 
 export default LandingPage;
