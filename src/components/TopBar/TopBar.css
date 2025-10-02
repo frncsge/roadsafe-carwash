@@ -55,3 +55,31 @@
     font-size: 1.5rem;
     color: white;
 }
+
+#loading-admin-name {
+    width: 5rem;
+    height: 1rem;
+    background-color: #dededeb9;
+    border-radius: 10px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+#loading-admin-profile {
+    width: 40px;
+    height: 40px;
+    background-color: #dededeb9;
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
