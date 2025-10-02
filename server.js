@@ -72,7 +72,7 @@ app.get("/api/auth/validation", (req, res) => {
   if (req.isAuthenticated()) {
     return res.sendStatus(200);
   }
-  res.sendStatus(401); 
+  res.sendStatus(401);
 });
 
 //for giving the credentials of the logged in user/admin.
@@ -82,6 +82,26 @@ app.get("/api/admin/me", (req, res) => {
     return res.json(req.user);
   }
   res.sendStatus(401);
+});
+
+app.get("/api/staff", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const response = await db.query(`SELECT 
+	                                      staff_id,
+	                                      CONCAT(last_name, ', ', first_name) AS full_name, 
+	                                      phone_number,
+	                                      status
+                                       FROM 
+	                                      staff
+                                       ORDER BY full_name`);
+      const staff = response.rows;
+      res.status(200).json(staff);
+    } catch (error) {
+      console.error(error);
+      return res.sendStatus(500);
+    }
+  }
 });
 
 passport.use(

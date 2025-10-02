@@ -3,47 +3,60 @@ import { Navigate } from "react-router-dom";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 
 function Dashboard() {
-  const [admin, setAdmin] = useState(null);
+  const [staff, setStaff] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchAdmin() {
+    async function fetchStaff() {
       try {
-        const response = await fetch("http://localhost:3000/api/admin/me", {
+        const response = await fetch("http://localhost:3000/api/staff", {
           method: "GET",
           credentials: "include",
         });
 
         if (response.ok) {
-          const adminObject = await response.json();
-          setAdmin(adminObject);
+          const staffObject = await response.json();
+          setStaff(staffObject);
         } else if (response.status === 401) {
-          setAdmin(null);
+          setStaff(null);
         }
       } catch (error) {
         console.error(error);
-        setAdmin(null);
+        setStaff(null);
       } finally {
         setIsLoading(false);
       }
     }
 
-    fetchAdmin();
+    fetchStaff();
   }, []);
 
   if (isLoading) {
     return <LoadingScreen />;
   }
 
-  if(!admin) {
-    return <Navigate to='/admin/login'/>;
+  if (!staff) {
+    return <Navigate to="/admin/login" />;
   }
 
   return (
     <main id="dashboard">
-      
+      <table id="staff-table">
+        <tr>
+          <th>Staff name</th>
+          <th>Status</th>
+        </tr>
+        {staff.map((s) => {
+          return (
+            <tr>
+              <td>{s.full_name}</td>
+              <td>{s.status}</td>
+            </tr>
+          );
+        })}
+      </table>
     </main>
-  )
+  );
 }
 
 export default Dashboard;
