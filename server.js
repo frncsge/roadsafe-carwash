@@ -84,6 +84,54 @@ app.get("/api/admin/me", (req, res) => {
   res.sendStatus(401);
 });
 
+app.get("/api/queue", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const response = await db.query(`SELECT
+	q.queue_id,
+	cs.customer_id,
+	CONCAT(cs.last_name, ', ', cs.first_name) AS customer_name,
+	CONCAT(v.make, ', ', v.model) AS customer_vehicle,
+	v.type,
+	(
+		SELECT 
+			STRING_AGG(s.service_name, ', ')
+		FROM queueService qs
+		JOIN service s ON s.service_id = qs.service_id
+		WHERE qs.queue_id = q.queue_id
+	) AS service_bought,
+	(
+		SELECT 
+			SUM(qs.service_price)
+		FROM queueService qs
+		WHERE qs.queue_id = q.queue_id
+	) AS total_amount,
+	q.status,
+	(
+		SELECT 
+			COALESCE(
+				STRING_AGG(CONCAT(st.first_name, ' ', st.last_name), '; '), 
+				'N/A'
+			)
+		FROM queueStaff qst
+		JOIN staff st ON st.staff_id = qst.staff_id
+		WHERE qst.queue_id = q.queue_id
+	) AS staff_assigned
+FROM queue q
+JOIN vehicle v ON v.vehicle_id = q.vehicle_id
+JOIN customer cs ON cs.customer_id = v.customer_id
+ORDER BY queue_id;`);
+      const queue = response.rows;
+      res.status(200).json(queue);
+    } catch (error) {
+      console.error(error);
+      return res.sendStatus(500);
+    }
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 app.get("/api/staff", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
@@ -104,6 +152,8 @@ app.get("/api/staff", async (req, res) => {
       console.error(error);
       return res.sendStatus(500);
     }
+  } else {
+    res.sendStatus(401);
   }
 });
 
