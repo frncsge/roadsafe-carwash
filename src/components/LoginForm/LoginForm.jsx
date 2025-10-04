@@ -3,6 +3,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +26,7 @@ function LoginForm() {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/admin/login", {
+      const response = await fetch(API_URL + "/api/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,8 +59,8 @@ function LoginForm() {
 
   return (
     <div id="login-form-container">
-      <img id="login-logo" src="/roadsafe logo.png" alt="Roadsafe Logo" />
       <form onSubmit={handleFormSubmit} id="login-form">
+        <img id="login-logo" src="/roadsafe logo.png" alt="Roadsafe Logo" />
         {!successLogin ? <span id="login-message">{loginMessage}</span> : null}
         <label htmlFor="username">Username</label>
         <input

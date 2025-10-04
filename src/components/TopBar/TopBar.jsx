@@ -3,13 +3,14 @@ import { Navigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 function TopBar() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [admin, setAdmin] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAdmin() {
       try {
-        const response = await fetch("http://localhost:3000/api/admin/me", {
+        const response = await fetch(API_URL + "/api/admin/me", {
           method: "GET",
           credentials: "include",
         });

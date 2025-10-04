@@ -1,6 +1,20 @@
 #dashboard {
-    background-color: white;
-    border-top-left-radius: 50px;
-    padding-top: 1.5rem;
-    padding-left: 1.5rem;
+  background-color: white;
+  border-top-left-radius: 30px;
+  padding-top: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+#staff-table {
+  border-collapse: collapse;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+#staff-table th,
+td {
+  border: 1px solid #bababa;
+  padding: 1rem;
+  text-align: start;
 }

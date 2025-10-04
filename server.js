@@ -88,13 +88,16 @@ app.get("/api/staff", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       const response = await db.query(`SELECT 
-	                                      staff_id,
-	                                      CONCAT(last_name, ', ', first_name) AS full_name, 
-	                                      phone_number,
-	                                      status
-                                       FROM 
-	                                      staff
-                                       ORDER BY full_name`);
+	                                        st.staff_id,
+	                                        CONCAT(st.last_name, ', ', st.first_name) AS full_name, 
+	                                        st.phone_number,
+	                                        st.status,
+	                                        COALESCE(CONCAT(v.make, ', ', v.model, ' - ', v.plate_number), 'N/A') AS assigned_to
+                                       FROM staff st
+                                       LEFT JOIN queueStaff qst ON qst.staff_id = st.staff_id
+                                       LEFT JOIN queue q ON q.queue_id = qst.queue_id
+                                       LEFT JOIN vehicle v ON v.vehicle_id = q.vehicle_id
+                                       ORDER BY full_name;`);
       const staff = response.rows;
       res.status(200).json(staff);
     } catch (error) {

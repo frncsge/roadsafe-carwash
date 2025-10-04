@@ -3,13 +3,14 @@ import { Navigate } from "react-router-dom";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 
 function Dashboard() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [staff, setStaff] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchStaff() {
       try {
-        const response = await fetch("http://localhost:3000/api/staff", {
+        const response = await fetch(API_URL + "/api/staff", {
           method: "GET",
           credentials: "include",
         });
@@ -42,18 +43,42 @@ function Dashboard() {
   return (
     <main id="dashboard">
       <table id="staff-table">
-        <tr>
-          <th>Staff name</th>
-          <th>Status</th>
-        </tr>
-        {staff.map((s) => {
-          return (
-            <tr>
-              <td>{s.full_name}</td>
-              <td>{s.status}</td>
-            </tr>
-          );
-        })}
+        <thead>
+          <tr>
+            <th>Staff name</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {staff.map((s) => {
+            return (
+              <tr>
+                <td>{s.full_name}</td>
+                <td>{s.status}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <table id="staff-table">
+        <thead>
+          <tr>
+            <th>Staff name</th>
+            <th>Status</th>
+            <th>Assigned to</th>
+          </tr>
+        </thead>
+        <tbody>
+          {staff.map((s) => {
+            return (
+              <tr>
+                <td>{s.full_name}</td>
+                <td>{s.status}</td>
+                <td>{s.assigned_to}</td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     </main>
   );
