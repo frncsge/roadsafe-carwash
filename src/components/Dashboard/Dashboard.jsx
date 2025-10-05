@@ -70,6 +70,7 @@ function Dashboard() {
   return (
     <main id="dashboard">
       <table id="queue-table">
+        <caption>Queue:</caption>
         <thead>
           <tr>
             <th>No.</th>
@@ -98,11 +99,17 @@ function Dashboard() {
             );
           })}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={8}><a href="#">Manage Queue</a></td>
+          </tr>
+        </tfoot>
       </table>
       <table id="staff-table">
+        <caption>Staff:</caption>
         <thead>
           <tr>
-            <th>Staff name</th>
+            <th>Name</th>
             <th>Status</th>
             <th>Assigned to</th>
           </tr>
@@ -118,6 +125,11 @@ function Dashboard() {
             );
           })}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={8}><a href="#">Manage Staff</a></td>
+          </tr>
+        </tfoot>
       </table>
     </main>
   );
