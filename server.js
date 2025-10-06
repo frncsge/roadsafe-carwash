@@ -140,7 +140,7 @@ app.get("/api/staff", async (req, res) => {
 	                                        CONCAT(st.last_name, ', ', st.first_name) AS full_name, 
 	                                        st.phone_number,
 	                                        st.status,
-	                                        COALESCE(CONCAT(v.make, ', ', v.model, ' - ', v.plate_number), 'N/A') AS assigned_to
+	                                        COALESCE(NULLIF(CONCAT(v.make, ', ', v.model, ' - ', v.plate_number), ',  - '), 'N/A') AS assigned_to
                                        FROM staff st
                                        LEFT JOIN queueStaff qst ON qst.staff_id = st.staff_id
                                        LEFT JOIN queue q ON q.queue_id = qst.queue_id
