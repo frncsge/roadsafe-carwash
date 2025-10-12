@@ -88,39 +88,30 @@ app.get("/api/queue", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       const response = await db.query(`SELECT
-	q.queue_id,
-	cs.customer_id,
-	CONCAT(cs.last_name, ', ', cs.first_name) AS customer_name,
-	CONCAT(v.make, ', ', v.model) AS customer_vehicle,
-	v.type,
-	(
-		SELECT 
-			STRING_AGG(s.service_name, ', ')
-		FROM queueService qs
-		JOIN service s ON s.service_id = qs.service_id
-		WHERE qs.queue_id = q.queue_id
-	) AS service_bought,
-	(
-		SELECT 
-			SUM(qs.service_price)
-		FROM queueService qs
-		WHERE qs.queue_id = q.queue_id
-	) AS total_amount,
-	q.status,
-	(
-		SELECT 
-			COALESCE(
-				STRING_AGG(CONCAT(st.first_name, ' ', st.last_name), '; '), 
-				'N/A'
-			)
-		FROM queueStaff qst
-		JOIN staff st ON st.staff_id = qst.staff_id
-		WHERE qst.queue_id = q.queue_id
-	) AS staff_assigned
+  q.queue_id,
+  cs.customer_id,
+  CONCAT(cs.last_name, ', ', cs.first_name) AS customer_name,
+  CONCAT(v.make, ' ', v.model, ' - ', v.plate_number) AS customer_vehicle,
+  v.type,
+  COALESCE(
+    STRING_AGG(DISTINCT s.service_name, ', '), 
+    'N/A'
+  ) AS service_bought,
+  COALESCE(SUM(qs.service_price), 0) AS total_amount,
+  q.status,
+  COALESCE(
+    STRING_AGG(DISTINCT CONCAT(st.first_name, ' ', st.last_name), '; '),
+    'N/A'
+  ) AS staff_assigned
 FROM queue q
 JOIN vehicle v ON v.vehicle_id = q.vehicle_id
 JOIN customer cs ON cs.customer_id = v.customer_id
-ORDER BY queue_id;`);
+LEFT JOIN queueService qs ON qs.queue_id = q.queue_id
+LEFT JOIN service s ON s.service_id = qs.service_id
+LEFT JOIN queueStaff qst ON qst.queue_id = q.queue_id
+LEFT JOIN staff st ON st.staff_id = qst.staff_id
+GROUP BY q.queue_id, cs.customer_id, cs.last_name, cs.first_name, v.make, v.model, v.plate_number, v.type, q.status
+ORDER BY q.queue_id;`);
       const queue = response.rows;
       res.status(200).json(queue);
     } catch (error) {
@@ -136,16 +127,16 @@ app.get("/api/staff", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       const response = await db.query(`SELECT 
-	                                        st.staff_id,
-	                                        CONCAT(st.last_name, ', ', st.first_name) AS full_name, 
-	                                        st.phone_number,
-	                                        st.status,
-	                                        COALESCE(NULLIF(CONCAT(v.make, ', ', v.model, ' - ', v.plate_number), ',  - '), 'N/A') AS assigned_to
-                                       FROM staff st
-                                       LEFT JOIN queueStaff qst ON qst.staff_id = st.staff_id
-                                       LEFT JOIN queue q ON q.queue_id = qst.queue_id
-                                       LEFT JOIN vehicle v ON v.vehicle_id = q.vehicle_id
-                                       ORDER BY full_name;`);
+	st.staff_id,
+	CONCAT(st.last_name, ', ', st.first_name) AS full_name, 
+	st.phone_number,
+	st.status,
+COALESCE(NULLIF(CONCAT(v.make, ', ', v.model, ' - ', v.plate_number), ',  - '), 'N/A') AS assigned_to
+FROM staff st
+LEFT JOIN queueStaff qst ON qst.staff_id = st.staff_id
+LEFT JOIN queue q ON q.queue_id = qst.queue_id
+LEFT JOIN vehicle v ON v.vehicle_id = q.vehicle_id
+ORDER BY full_name;`);
       const staff = response.rows;
       res.status(200).json(staff);
     } catch (error) {
