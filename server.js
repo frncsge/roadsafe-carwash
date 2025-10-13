@@ -148,23 +148,32 @@ app.post("/api/admin/login", (req, res, next) => {
   })(req, res, next);
 });
 
+//add new customer
 app.post("/api/customer", async (req, res) => {
-  //get the form input
-  const { last_name, first_name } = req.body;
+  if (req.isAuthenticated()) {
+    const { last_name, first_name } = req.body;
 
-  try {
-    //insert values
-    await db.query(
-      "INSERT INTO customer (last_name, first_name) VALUES ($1, $2);",
-      [last_name, first_name]
-    );
+    try {
+      //insert values and send back the returned generated customer_id
+      const result = await db.query(
+        "INSERT INTO customer (last_name, first_name) VALUES ($1, $2) RETURNING customer_id;",
+        [last_name, first_name]
+      );
+      const returnedCustomer_id = result.rows[0];
 
-    res.sendStatus(200);
-  } catch (error) {
-    console.error("Error INSERT operation. Message:", error);
-    res.sendStatus(500);
+      res.json(returnedCustomer_id);
+    } catch (error) {
+      console.error("Error INSERT operation. Message:", error);
+      res.sendStatus(500);
+    }
   }
 });
+
+//add new vehicle for a customer
+// app.post("/api/vehicle", async (req, res) => {
+//   const { customer_id, make, model, type, plate_number } = req.body;
+
+// });
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
