@@ -42,32 +42,6 @@ app.use(passport.session());
 
 app.use(express.json());
 
-app.post("/api/admin/login", (req, res, next) => {
-  passport.authenticate("local", (error, admin) => {
-    if (error)
-      return res
-        .status(500)
-        .json({ success: false, message: "Server error. Try again later." });
-
-    if (!admin)
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid username or password." });
-
-    //create the session
-    req.logIn(admin, (error) => {
-      if (error)
-        return res
-          .status(500)
-          .json({ success: false, message: "Server error. Try again later." });
-
-      return res
-        .status(200)
-        .json({ success: true, message: "Login successful." }); //passing admin is not needed here
-    });
-  })(req, res, next);
-});
-
 app.get("/api/auth/validation", (req, res) => {
   if (req.isAuthenticated()) {
     return res.sendStatus(200);
@@ -145,6 +119,50 @@ ORDER BY full_name;`);
     }
   } else {
     res.sendStatus(401);
+  }
+});
+
+app.post("/api/admin/login", (req, res, next) => {
+  passport.authenticate("local", (error, admin) => {
+    if (error)
+      return res
+        .status(500)
+        .json({ success: false, message: "Server error. Try again later." });
+
+    if (!admin)
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid username or password." });
+
+    //create the session
+    req.logIn(admin, (error) => {
+      if (error)
+        return res
+          .status(500)
+          .json({ success: false, message: "Server error. Try again later." });
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Login successful." }); //passing admin is not needed here
+    });
+  })(req, res, next);
+});
+
+app.post("/api/customer", async (req, res) => {
+  //get the form input
+  const { last_name, first_name } = req.body;
+
+  try {
+    //insert values
+    await db.query(
+      "INSERT INTO customer (last_name, first_name) VALUES ($1, $2);",
+      [last_name, first_name]
+    );
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error INSERT operation. Message:", error);
+    res.sendStatus(500);
   }
 });
 
