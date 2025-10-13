@@ -163,17 +163,38 @@ app.post("/api/customer", async (req, res) => {
 
       res.json(returnedCustomer_id);
     } catch (error) {
-      console.error("Error INSERT operation. Message:", error);
+      console.error("Error INSERT operation failed. Message:", error);
       res.sendStatus(500);
     }
+  } else {
+    //user not authenticated
+    res.sendStatus(401);
   }
 });
 
 //add new vehicle for a customer
-// app.post("/api/vehicle", async (req, res) => {
-//   const { customer_id, make, model, type, plate_number } = req.body;
+app.post("/api/vehicle", async (req, res) => {
+  if (req.isAuthenticated) {
+    const { customer_id, make, model, type, plate_number } = req.body;
 
-// });
+    try {
+      //INSERT new vehicle and return the generated vehicle_id
+      const result = await db.query(
+        "INSERT INTO vehicle (customer_id, make, model, type, plate_number) VALUES ($1, $2, $3, $4, $5) RETURNING vehicle_id;",
+        [customer_id, make, model, type, plate_number]
+      );
+      const returnedVehicle_id = result.rows[0];
+
+      res.json(returnedVehicle_id);
+    } catch (error) {
+      console.error("Error INSERT operation failed. Message:", error);
+      res.sendStatus(500);
+    }
+  } else {
+    //user not authenticated
+    res.sendStatus(401);
+  }
+});
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
