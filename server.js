@@ -84,6 +84,7 @@ LEFT JOIN queueService qs ON qs.queue_id = q.queue_id
 LEFT JOIN service s ON s.service_id = qs.service_id
 LEFT JOIN queueStaff qst ON qst.queue_id = q.queue_id
 LEFT JOIN staff st ON st.staff_id = qst.staff_id
+WHERE q.status <> 'Finished'
 GROUP BY q.queue_id, cs.customer_id, cs.last_name, cs.first_name, v.make, v.model, v.plate_number, v.type, q.status
 ORDER BY q.queue_id;`);
       const queue = response.rows;
@@ -105,7 +106,7 @@ app.get("/api/staff", async (req, res) => {
 	CONCAT(st.last_name, ', ', st.first_name) AS full_name, 
 	st.phone_number,
 	st.status,
-COALESCE(NULLIF(CONCAT(v.make, ', ', v.model, ' - ', v.plate_number), ',  - '), 'N/A') AS assigned_to
+COALESCE(NULLIF(CONCAT(v.make, ' ', v.model, ' - ', v.plate_number), '  - '), 'N/A') AS assigned_to
 FROM staff st
 LEFT JOIN queueStaff qst ON qst.staff_id = st.staff_id
 LEFT JOIN queue q ON q.queue_id = qst.queue_id
