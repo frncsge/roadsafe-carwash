@@ -55,7 +55,7 @@ app.get("/api/admin/me", (req, res) => {
     //return the admin through req.user (from the deserializeUser)
     return res.json(req.user);
   }
-  res.sendStatus(401);
+  res.status(401).json({ message: "Unauthorized" });
 });
 
 app.get("/api/queue", async (req, res) => {
@@ -93,7 +93,7 @@ ORDER BY q.queue_id;`);
       return res.sendStatus(500);
     }
   } else {
-    res.sendStatus(401);
+    res.status(401).json({ message: "Unauthorized" });
   }
 });
 
@@ -118,7 +118,7 @@ ORDER BY full_name;`);
       return res.sendStatus(500);
     }
   } else {
-    res.sendStatus(401);
+    res.status(401).json({ message: "Unauthorized" });
   }
 });
 
@@ -163,12 +163,15 @@ app.post("/api/customer", async (req, res) => {
 
       res.json(returnedCustomer_id);
     } catch (error) {
-      console.error("Error INSERT operation failed. Message:", error);
+      console.error(
+        "Error INSERT operation failed for customer. Message:",
+        error
+      );
       res.sendStatus(500);
     }
   } else {
     //user not authenticated
-    res.sendStatus(401);
+    res.status(401).json({ message: "Unauthorized" });
   }
 });
 
@@ -187,12 +190,121 @@ app.post("/api/vehicle", async (req, res) => {
 
       res.json(returnedVehicle_id);
     } catch (error) {
-      console.error("Error INSERT operation failed. Message:", error);
+      console.error(
+        "Error INSERT operation failed for vehicle. Message:",
+        error
+      );
+      if (error.code === "23505") {
+        //status code 409 for constraint violation
+        return res
+          .status(409)
+          .json({ message: "Duplicate vehicle with the same plate number." });
+      }
+
       res.sendStatus(500);
     }
   } else {
     //user not authenticated
-    res.sendStatus(401);
+    res.status(401).json({ message: "Unauthorized" });
+  }
+});
+
+//add vehicle to queue
+app.post("/api/queue", async (req, res) => {
+  if (req.isAuthenticated()) {
+    const { vehicle_id } = req.body;
+
+    try {
+      const result = await db.query(
+        "INSERT INTO queue (vehicle_id) VALUES ($1) RETURNING queue_id;",
+        [vehicle_id]
+      );
+      const returnedQueue_id = result.rows[0];
+
+      res.json(returnedQueue_id);
+    } catch (error) {
+      console.error("Error INSERT operation failed for queue. Message:", error);
+      if (error.code === "23505") {
+        //status code 409 for constraint violation
+        return res
+          .status(409)
+          .json({ message: "Duplicate vehicle waiting in queue." });
+      }
+
+      res.sendStatus(500);
+    }
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+});
+
+//accepts an array of objects (multiple services)
+app.post("/api/queueService", async (req, res) => {
+  if (req.isAuthenticated()) {
+    const queueServiceArr = req.body.queueServiceArr;
+
+    try {
+      const values = [];
+      const valuePlaceholders = queueServiceArr
+        .map((queueService, index) => {
+          //multiply 2 because index 0 * 2 = 0 which is used for VALUES($baseIndex + 1, $baseIndex + 2) = ($1, $2)
+          const baseIndex = index * 2;
+          values.push(queueService.queue_id, queueService.service_id);
+
+          return `($${baseIndex + 1}, $${baseIndex + 2})`;
+        })
+        .join(", ");
+
+      await db.query(
+        `INSERT INTO queueService VALUES ${valuePlaceholders};`,
+        values
+      );
+      res.sendStatus(200);
+    } catch (error) {
+      console.error(
+        "Error INSERT operation failed for queueService. Message:",
+        error
+      );
+      if (error.code === "23505") {
+        //status code 409 for constraint violation
+        return res.status(409).json({ message: "Duplicate service." });
+      }
+
+      res.sendStatus(500);
+    }
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+});
+
+app.post("/api/queueStaff", async (req, res) => {
+  const queueStaffArr = req.body.queueStaffArr;
+
+  try {
+    const values = [];
+    const valuePlaceholder = queueStaffArr.map((queueStaff, index) => {
+      const baseIndex = index * 2;
+      values.push(queueStaff.queue_id, queueStaff.staff_id);
+
+      return `($${baseIndex + 1}, $${baseIndex + 2})`;
+    });
+
+    await db.query(
+      `INSERT INTO queueStaff VALUES ${valuePlaceholder};`,
+      values
+    );
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(
+      "Error INSERT operation failed for queueService. Message:",
+      error
+    );
+    if (error.code === "23505") {
+      //status code 409 for constraint violation
+      return res.status(409).json({ message: "Duplicate staff." });
+    }
+
+    res.sendStatus(500);
   }
 });
 
