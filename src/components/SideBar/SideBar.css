@@ -1,27 +1,41 @@
 #side-bar-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    padding: 1.3rem;
-    padding-top: 0;
-    background-color: #FBFBFB;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding: 1.3rem;
+  padding-top: 0;
+  background-color: #fbfbfb;
 }
 
 .side-bar-link {
-    text-decoration: none;
-    color: black;
-    font-family: "Roboto", sans-serif;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    gap: 0.8rem;
-    padding: 0.8rem;
-    border-radius: 50px;
+  text-decoration: none;
+  color: black;
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0.8rem;
+  padding: 0.8rem;
+  border-radius: 50px;
 }
 
-@media (hover: hover){
-    .side-bar-link:hover {
-        background-color: #dededeb9;
-    }
+.side-bar-link.active {
+  background-color: #d00909;
+  color: white;
+}
+
+.side-bar-link.active:active {
+  box-shadow: inset 0 0 0 5px rgb(42, 111, 215);
+}
+
+@media (hover: hover) {
+  .side-bar-link:hover {
+    background-color: #dededeb9;
+  }
+
+  .side-bar-link.active:hover {
+    background-color: #bd0d0ddf;
+    color: white;
+  }
 }
