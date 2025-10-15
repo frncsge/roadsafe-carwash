@@ -71,7 +71,7 @@ app.get("/api/queue", async (req, res) => {
     STRING_AGG(DISTINCT s.service_name, ', '), 
     'N/A'
   ) AS service_bought,
-  COALESCE(SUM(qs.service_price), 0) AS total_amount,
+  COALESCE(SUM(DISTINCT qs.service_price), 0) AS total_amount,
   q.status,
   COALESCE(
     STRING_AGG(DISTINCT CONCAT(st.first_name, ' ', st.last_name), '; '),

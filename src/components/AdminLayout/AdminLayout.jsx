@@ -5,7 +5,7 @@ import SideBar from "../SideBar/SideBar";
 function AdminLayout() {
   const currentPathname = useLocation().pathname;
 
-  if ((currentPathname = "/admin")) {
+  if ((currentPathname === "/admin")) {
     return <Navigate to="/admin/dashboard" replace />;
   }
 

@@ -86,7 +86,7 @@ function Dashboard() {
         <tbody>
           {queue.map((q, index) => {
             return (
-              <tr>
+              <tr data-queue-id={q.queue_id} data-customer_id={q.customer_id}>
                 <td>{index + 1}</td>
                 <td>{q.customer_name}</td>
                 <td>{q.customer_vehicle}</td>
@@ -117,7 +117,7 @@ function Dashboard() {
         <tbody>
           {staff.map((s) => {
             return (
-              <tr>
+              <tr data-staff-id={s.staff_id}>
                 <td>{s.full_name}</td>
                 <td>{s.status}</td>
                 <td>{s.assigned_to}</td>
