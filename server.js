@@ -310,7 +310,7 @@ app.post("/api/queueStaff", async (req, res) => {
 });
 
 app.delete("/api/queue/:id", async (req, res) => {
-  if(req,isAuthenticated()){
+  if(req.isAuthenticated()){
     const queue_id = req.params.id;
     try {
       await db.query("DELETE FROM queue WHERE queue_id = $1", [queue_id]);

@@ -1,7 +1,7 @@
 #dashboard {
   background-color: white;
   border-top-left-radius: 30px;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 #dashboard table {
@@ -10,20 +10,23 @@
   font-size: 0.8rem;
 }
 
-#dashboard table th,
-td {
-  border: 1px solid #bababa;
-  padding: 0.5rem;
+#dashboard table th, #dashboard td{
+  border-bottom: 1px solid #dededeb9;
+  padding: 0.7rem;
   text-align: start;
+}
+
+#dashboard table tr td {
+  border: none;
+  border-bottom: 1px solid #dededeb9;
 }
 
 #dashboard table caption {
   padding: 0.7rem;
-  border-top: 1px solid #bababa;
-  border-left: 1px solid #bababa;
-  border-right: 1px solid #bababa;
   text-align: start;
   background-color: #dededeb9;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   font-weight: bold;
 }
 
