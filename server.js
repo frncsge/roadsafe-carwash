@@ -74,7 +74,7 @@ app.get("/api/queue", async (req, res) => {
   COALESCE(SUM(DISTINCT qs.service_price), 0) AS total_amount,
   q.status,
   COALESCE(
-    STRING_AGG(DISTINCT CONCAT(st.first_name, ' ', st.last_name), '; '),
+    NULLIF(STRING_AGG(DISTINCT CONCAT(st.first_name, ' ', st.last_name), '; '), ' '),
     'N/A'
   ) AS staff_assigned
 FROM queue q

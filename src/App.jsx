@@ -4,6 +4,7 @@ import LoginForm from "./components/LoginForm/LoginForm";
 import Dashboard from "./components/Dashboard/Dashboard";
 import LandingPage from "./components/LandingPage/LandingPage";
 import AdminLayout from "./components/AdminLayout/AdminLayout";
+import QueuePage from "./components/QueuePage/QueuePage";
 
 
 
@@ -26,6 +27,7 @@ function App() {
         >
           {/* nested route which is the output of the outlet inside adminLayout component */}
           <Route path="dashboard" element={<Dashboard />}/>
+          <Route path="queue" element={<QueuePage />}/>
         </Route>
       </Routes>
     </BrowserRouter>
