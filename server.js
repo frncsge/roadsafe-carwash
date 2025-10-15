@@ -309,6 +309,21 @@ app.post("/api/queueStaff", async (req, res) => {
   }
 });
 
+app.delete("/api/queue/:id", async (req, res) => {
+  if(req,isAuthenticated()){
+    const queue_id = req.params.id;
+    try {
+      await db.query("DELETE FROM queue WHERE queue_id = $1", [queue_id]);
+      res.sendStatus(200);
+    } catch (error) {
+      console.error("Error DELETE operation for queue. Message:", error);
+      res.sendStatus(500);
+    }
+  } else {
+    res.sendStatus(401);
+  }
+})
+
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
