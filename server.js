@@ -178,12 +178,12 @@ app.post("/api/customer", async (req, res) => {
 
 app.post("/api/staff", async (req, res) => {
   if (req.isAuthenticated()) {
-    const { last_name, first_name, phone_number } = req.body;
+    const { last_name, first_name, phone_number, status } = req.body;
 
     try {
       await db.query(
-        "INSERT INTO staff (last_name, first_name, phone_number) VALUES ($1, $2, $3)",
-        [last_name, first_name, phone_number]
+        "INSERT INTO staff (last_name, first_name, phone_number, status) VALUES ($1, $2, $3, $4)",
+        [last_name, first_name, phone_number, status]
       );
       res.send(200).json({ message: "Staff added successfully." });
     } catch (error) {
