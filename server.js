@@ -187,10 +187,7 @@ app.post("/api/staff", async (req, res) => {
       );
       res.send(200).json({ message: "Staff added successfully." });
     } catch (error) {
-      console.error(
-        "Error INSERT operation failed for staff. Message:",
-        error
-      );
+      console.error("Error INSERT operation failed for staff. Message:", error);
       if (error.code === "23505") {
         //status code 409 for constraint violation
         return res

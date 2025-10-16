@@ -4,11 +4,14 @@ import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
+import { use } from "passport";
 
 function StaffPage() {
   const API_URL = import.meta.env.VITE_API_URL;
   const [staff, setStaff] = useState(null);
   const [isLoadingStaff, setIsLoadingStaff] = useState(true);
+  const [staffToDelete, setStaffToDelete] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     async function fetchStaff() {
@@ -43,8 +46,48 @@ function StaffPage() {
     return <Navigate to="/admin/login" />;
   }
 
+  function handleDeleteClick(staff_id, name) {
+    setStaffToDelete({ staff_id, name });
+    setShowDeleteModal(true);
+  }
+
+  async function handleDeleteConfirm(isConfirmed) {
+    setShowDeleteModal(false);
+
+    if (isConfirmed) {
+      try {
+        const response = await fetch(
+          API_URL + "/api/staff/" + staffToDelete.staff_id,
+          {
+            method: "DELETE",
+            credentials: "include",
+          }
+        );
+
+        if (response.ok) {
+          setStaff((prevStaff) => {
+            return prevStaff.filter((staff) => {
+              return staff.queue_id !== staffToDelete.staff_id;
+            });
+          });
+          console.log("Delete successful.");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
   return (
     <main id="staff-page">
+      {showDeleteModal && (
+        <ConfirmDelete
+          deleteFrom={"staff"}
+          name={staffToDelete.name}
+          vehicle={null}
+          confirmDelete={handleDeleteConfirm}
+        />
+      )}
       <table id="staff-table">
         <caption>Staff:</caption>
         <thead>
@@ -68,7 +111,10 @@ function StaffPage() {
                   <button className="action-button">
                     <FaEdit size={16} />
                   </button>
-                  <button className="action-button">
+                  <button
+                    className="action-button"
+                    onClick={() => handleDeleteClick(s.staff_id, s.full_name)}
+                  >
                     <MdDelete color="red" size={16} />
                   </button>
                 </td>
