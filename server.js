@@ -176,6 +176,35 @@ app.post("/api/customer", async (req, res) => {
   }
 });
 
+app.post("/api/staff", async (req, res) => {
+  if (req.isAuthenticated()) {
+    const { last_name, first_name, phone_number } = req.body;
+
+    try {
+      await db.query(
+        "INSERT INTO staff (last_name, first_name, phone_number) VALUES ($1, $2, $3)",
+        [last_name, first_name, phone_number]
+      );
+      res.send(200).json({ message: "Staff added successfully." });
+    } catch (error) {
+      console.error(
+        "Error INSERT operation failed for staff. Message:",
+        error
+      );
+      if (error.code === "23505") {
+        //status code 409 for constraint violation
+        return res
+          .status(409)
+          .json({ message: "Duplicate staff with the same phone number." });
+      }
+
+      res.sendStatus(500);
+    }
+  } else {
+    res.send(401).json({ message: "Unauthorized" });
+  }
+});
+
 //add new vehicle for a customer
 app.post("/api/vehicle", async (req, res) => {
   if (req.isAuthenticated) {
@@ -278,6 +307,7 @@ app.post("/api/queueService", async (req, res) => {
   }
 });
 
+//accepts an array of objects (multiple services)
 app.post("/api/queueStaff", async (req, res) => {
   const queueStaffArr = req.body.queueStaffArr;
 
@@ -310,7 +340,7 @@ app.post("/api/queueStaff", async (req, res) => {
 });
 
 app.delete("/api/queue/:id", async (req, res) => {
-  if(req.isAuthenticated()){
+  if (req.isAuthenticated()) {
     const queue_id = req.params.id;
     try {
       await db.query("DELETE FROM queue WHERE queue_id = $1", [queue_id]);
@@ -322,7 +352,7 @@ app.delete("/api/queue/:id", async (req, res) => {
   } else {
     res.sendStatus(401);
   }
-})
+});
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
