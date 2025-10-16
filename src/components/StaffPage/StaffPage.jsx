@@ -4,7 +4,6 @@ import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
-import { use } from "passport";
 
 function StaffPage() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -67,7 +66,7 @@ function StaffPage() {
         if (response.ok) {
           setStaff((prevStaff) => {
             return prevStaff.filter((staff) => {
-              return staff.queue_id !== staffToDelete.staff_id;
+              return staff.staff_id !== staffToDelete.staff_id;
             });
           });
           console.log("Delete successful.");
