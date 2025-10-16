@@ -3,18 +3,24 @@ function ConfirmDelete({ deleteFrom, name, vehicle, confirmDelete }) {
   const staffDeleteMessage = `You are about to delete ${name} from the staff list.`;
 
   return (
-    <div id="confirm-delete-modal">
-      <h1>CONFIRM DELETE</h1>
-      <p>
-        {deleteFrom === "queue"
-          ? queueDeleteMessage
-          : deleteFrom === "staff"
-          ? staffDeleteMessage
-          : null}
-      </p>
-      <div id="modal-button-container">
-        <button className="modal-button" onClick={() => confirmDelete(true)}>Proceed</button>
-        <button className="modal-button" onClick={() => confirmDelete(false)}>Discard</button>
+    <div id="modal-backdrop" onClick={() => confirmDelete(false)}>
+      <div id="confirm-delete-modal">
+        <h1>CONFIRM DELETE</h1>
+        <p>
+          {deleteFrom === "queue"
+            ? queueDeleteMessage
+            : deleteFrom === "staff"
+            ? staffDeleteMessage
+            : null}
+        </p>
+        <div id="modal-button-container">
+          <button className="modal-button" onClick={() => confirmDelete(true)}>
+            Proceed
+          </button>
+          <button className="modal-button" onClick={() => confirmDelete(false)}>
+            Discard
+          </button>
+        </div>
       </div>
     </div>
   );

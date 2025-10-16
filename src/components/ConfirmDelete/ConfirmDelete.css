@@ -1,10 +1,20 @@
+#modal-backdrop {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.533);
+    width: 100vw;
+    height: 100vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 #confirm-delete-modal {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    box-shadow: -5px 10px 10px 3px rgba(183, 183, 183, 0.37);
+    /* box-shadow: -5px 10px 10px 3px rgba(183, 183, 183, 0.37); */
     border-radius: 10px;
     max-width: 350px;
     width: 80%;
