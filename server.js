@@ -354,6 +354,21 @@ app.delete("/api/queue/:id", async (req, res) => {
   }
 });
 
+app.delete("/api/staff/:id", async (req, res) => {
+  if (req.isAuthenticated()) {
+    const staff_id = req.params.id;
+    try {
+      await db.query("DELETE FROM staff WHERE staff_id = $1", [staff_id]);
+      res.sendStatus(200);
+    } catch (error) {
+      console.error("Error DELETE operation for staff. Message:", error);
+      res.sendStatus(500);
+    }
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
