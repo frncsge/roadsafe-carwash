@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 
 function Dashboard() {
@@ -101,7 +101,7 @@ function Dashboard() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={8}><a href="#">Manage Queue</a></td>
+            <td colSpan={8}><NavLink to="/admin/queue">Manage queue</NavLink></td>
           </tr>
         </tfoot>
       </table>
@@ -127,7 +127,7 @@ function Dashboard() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={8}><a href="#">Manage Staff</a></td>
+            <td colSpan={8}><NavLink to="/admin/staff">Manage staff</NavLink></td>
           </tr>
         </tfoot>
       </table>
