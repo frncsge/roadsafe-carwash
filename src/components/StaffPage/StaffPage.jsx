@@ -4,6 +4,7 @@ import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
+import AddStaffModal from "../AddStaffModal/AddStaffModal";
 
 function StaffPage() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -11,29 +12,30 @@ function StaffPage() {
   const [isLoadingStaff, setIsLoadingStaff] = useState(true);
   const [staffToDelete, setStaffToDelete] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showAddStaffModal, setShowAddStaffModal] = useState(false);
+
+  async function fetchStaff() {
+    try {
+      const response = await fetch(API_URL + "/api/staff", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const staffObject = await response.json();
+        setStaff(staffObject);
+      } else if (response.status === 401) {
+        setStaff(null);
+      }
+    } catch (error) {
+      console.error(error);
+      setStaff(null);
+    } finally {
+      setIsLoadingStaff(false);
+    }
+  }
 
   useEffect(() => {
-    async function fetchStaff() {
-      try {
-        const response = await fetch(API_URL + "/api/staff", {
-          method: "GET",
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          const staffObject = await response.json();
-          setStaff(staffObject);
-        } else if (response.status === 401) {
-          setStaff(null);
-        }
-      } catch (error) {
-        console.error(error);
-        setStaff(null);
-      } finally {
-        setIsLoadingStaff(false);
-      }
-    }
-
     fetchStaff();
   }, []);
 
@@ -77,6 +79,18 @@ function StaffPage() {
     }
   }
 
+  function handleAddStaffClick() {
+    setShowAddStaffModal(true);
+  }
+
+  function handleAddConfirm(isConfirmed) {
+    setShowAddStaffModal(false);
+
+    if (isConfirmed) {
+      fetchStaff();
+    }
+  }
+
   return (
     <main id="staff-page">
       {showDeleteModal && (
@@ -87,6 +101,7 @@ function StaffPage() {
           confirmDelete={handleDeleteConfirm}
         />
       )}
+      {showAddStaffModal && <AddStaffModal confirmAdd={handleAddConfirm} />}
       <table id="staff-table">
         <caption>Staff:</caption>
         <thead>
@@ -123,7 +138,11 @@ function StaffPage() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={5}><button id="add-staff-button">Add Staff</button></td>
+            <td colSpan={5}>
+              <button id="add-staff-button" onClick={handleAddStaffClick}>
+                Add Staff
+              </button>
+            </td>
           </tr>
         </tfoot>
       </table>

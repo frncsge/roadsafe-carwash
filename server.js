@@ -185,7 +185,7 @@ app.post("/api/staff", async (req, res) => {
         "INSERT INTO staff (last_name, first_name, phone_number, status) VALUES ($1, $2, $3, $4)",
         [last_name, first_name, phone_number, status]
       );
-      res.send(200).json({ message: "Staff added successfully." });
+      res.status(200).json({ message: "Staff added successfully." });
     } catch (error) {
       console.error("Error INSERT operation failed for staff. Message:", error);
       if (error.code === "23505") {
@@ -198,7 +198,7 @@ app.post("/api/staff", async (req, res) => {
       res.sendStatus(500);
     }
   } else {
-    res.send(401).json({ message: "Unauthorized" });
+    res.status(401).json({ message: "Unauthorized" });
   }
 });
 
