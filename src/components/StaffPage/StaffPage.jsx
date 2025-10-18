@@ -121,6 +121,11 @@ function StaffPage() {
             );
           })}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={5}><button id="add-staff-button">Add Staff</button></td>
+          </tr>
+        </tfoot>
       </table>
     </main>
   );

@@ -46,3 +46,27 @@
   margin: 1px;
   cursor: pointer;
 }
+
+#staff-page tfoot tr td {
+  text-align: right;
+  border: none;
+}
+
+#staff-page #add-staff-button {
+  border: 1px solid #dededeb9;
+  border-radius: 5px;
+  background-color: rgb(24, 202, 24);
+  padding: 0.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+ #staff-page #add-staff-button:active {
+    background-color: rgb(20, 183, 20);
+  }
+
+@media (hover: hover) {
+  #staff-page #add-staff-button:hover {
+    background-color: rgb(20, 183, 20);
+  }
+}
