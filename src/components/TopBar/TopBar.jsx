@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 function TopBar() {
@@ -42,7 +42,7 @@ function TopBar() {
         <div id="menu">
           <GiHamburgerMenu size={25} />
         </div>
-        <img id="logo" src="/roadsafe logo.png" alt="Roadsafe logo" />
+        <NavLink to={"/admin/dashboard"}><img id="logo" src="/roadsafe logo.png" alt="Roadsafe logo"/></NavLink>
       </section>
       <section className="admin-name-profile top-bar-section">
         {isLoading ? (
