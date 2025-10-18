@@ -1,24 +1,13 @@
 import express from "express";
-import pg from "pg";
-import dotenv from "dotenv";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import session from "express-session";
 import passport from "passport";
 import LocalStrategy from "passport-local";
-
-dotenv.config();
+import pool from "./db.js";
 
 const app = express();
 const port = 3000;
-const db = new pg.Client({
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
-});
-db.connect();
 
 app.use(
   cors({
@@ -61,7 +50,7 @@ app.get("/api/admin/me", (req, res) => {
 app.get("/api/queue", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
-      const response = await db.query(`SELECT
+      const response = await pool.query(`SELECT
   q.queue_id,
   cs.customer_id,
   CONCAT(cs.last_name, ', ', cs.first_name) AS customer_name,
@@ -101,7 +90,7 @@ ORDER BY q.queue_id;`);
 app.get("/api/staff", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
-      const response = await db.query(`SELECT 
+      const response = await pool.query(`SELECT 
 	st.staff_id,
 	CONCAT(st.last_name, ', ', st.first_name) AS full_name, 
 	st.phone_number,
@@ -156,7 +145,7 @@ app.post("/api/customer", async (req, res) => {
 
     try {
       //insert values and send back the returned generated customer_id
-      const result = await db.query(
+      const result = await pool.query(
         "INSERT INTO customer (last_name, first_name) VALUES ($1, $2) RETURNING customer_id;",
         [last_name, first_name]
       );
@@ -181,7 +170,7 @@ app.post("/api/staff", async (req, res) => {
     const { last_name, first_name, phone_number, status } = req.body;
 
     try {
-      await db.query(
+      await pool.query(
         "INSERT INTO staff (last_name, first_name, phone_number, status) VALUES ($1, $2, $3, $4)",
         [last_name, first_name, phone_number, status]
       );
@@ -209,7 +198,7 @@ app.post("/api/vehicle", async (req, res) => {
 
     try {
       //INSERT new vehicle and return the generated vehicle_id
-      const result = await db.query(
+      const result = await pool.query(
         "INSERT INTO vehicle (customer_id, make, model, type, plate_number) VALUES ($1, $2, $3, $4, $5) RETURNING vehicle_id;",
         [customer_id, make, model, type, plate_number]
       );
@@ -242,7 +231,7 @@ app.post("/api/queue", async (req, res) => {
     const { vehicle_id } = req.body;
 
     try {
-      const result = await db.query(
+      const result = await pool.query(
         "INSERT INTO queue (vehicle_id) VALUES ($1) RETURNING queue_id;",
         [vehicle_id]
       );
@@ -282,7 +271,7 @@ app.post("/api/queueService", async (req, res) => {
         })
         .join(", ");
 
-      await db.query(
+      await pool.query(
         `INSERT INTO queueService VALUES ${valuePlaceholders};`,
         values
       );
@@ -317,7 +306,7 @@ app.post("/api/queueStaff", async (req, res) => {
       return `($${baseIndex + 1}, $${baseIndex + 2})`;
     });
 
-    await db.query(
+    await pool.query(
       `INSERT INTO queueStaff VALUES ${valuePlaceholder};`,
       values
     );
@@ -340,7 +329,7 @@ app.delete("/api/queue/:id", async (req, res) => {
   if (req.isAuthenticated()) {
     const queue_id = req.params.id;
     try {
-      await db.query("DELETE FROM queue WHERE queue_id = $1", [queue_id]);
+      await pool.query("DELETE FROM queue WHERE queue_id = $1", [queue_id]);
       res.sendStatus(200);
     } catch (error) {
       console.error("Error DELETE operation for queue. Message:", error);
@@ -355,7 +344,7 @@ app.delete("/api/staff/:id", async (req, res) => {
   if (req.isAuthenticated()) {
     const staff_id = req.params.id;
     try {
-      await db.query("DELETE FROM staff WHERE staff_id = $1", [staff_id]);
+      await pool.query("DELETE FROM staff WHERE staff_id = $1", [staff_id]);
       res.sendStatus(200);
     } catch (error) {
       console.error("Error DELETE operation for staff. Message:", error);
@@ -370,7 +359,7 @@ passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
       //get the admin with the same username inputed.
-      const result = await db.query("SELECT * FROM admin WHERE username = $1", [
+      const result = await pool.query("SELECT * FROM admin WHERE username = $1", [
         username,
       ]);
 
