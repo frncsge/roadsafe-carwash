@@ -56,12 +56,23 @@ function AddStaffModal({ confirmAdd }) {
   }
 
   return (
-    <div id="add-staff-modal-backdrop">
-      <form id="add-staff-form" onSubmit={handleFormSubmit}>
+    <div
+      id="add-staff-modal-backdrop"
+      onClick={(e) => {
+        confirmAdd(false);
+      }}
+    >
+      <form
+        id="add-staff-form"
+        onSubmit={handleFormSubmit}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <div className="add-staff-modal-title">
           <section className="add-staff-modal-title-section">
             <div className="icon">
-              <HiMiniUserGroup color="white"/>
+              <HiMiniUserGroup color="white" />
             </div>
           </section>
           <section className="add-staff-modal-title-section">
