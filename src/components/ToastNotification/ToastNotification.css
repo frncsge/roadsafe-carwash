@@ -1,0 +1,34 @@
+#toast-notif {
+    max-width: 200px;
+    width: 60%;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9rem;  
+    background-color: rgba(24, 202, 24, 0.426);
+    border: 1px solid rgb(24, 202, 24);
+    border-radius: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;;
+
+    position: fixed;
+    top: 85%;
+    left: 82%;
+    transform: translateX(130%);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+#toast-notif.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+#toast-notif p{
+    margin: 0;
+}
+
+.toast-notif-close-button {
+    cursor: pointer;
+}

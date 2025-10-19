@@ -5,6 +5,7 @@ import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
 import AddStaffModal from "../AddStaffModal/AddStaffModal";
+import ToastNotification from "../ToastNotification/ToastNotification";
 
 function StaffPage() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -13,6 +14,8 @@ function StaffPage() {
   const [staffToDelete, setStaffToDelete] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
+  const [showToastNotif, setShowToastNotif] = useState(false);
+  const [toastNotifOperation, setToastNotifOperation] = useState("");
 
   async function fetchStaff() {
     try {
@@ -88,6 +91,17 @@ function StaffPage() {
 
     if (isConfirmed) {
       fetchStaff();
+
+      //show toast if staff is not null
+      if (staff) {
+        setToastNotifOperation("add");
+        setShowToastNotif(true);
+
+        //remove notif after 5 secs
+        setTimeout(() => {
+          setShowToastNotif(false);
+        }, 5000);
+      }
     }
   }
 
@@ -146,6 +160,12 @@ function StaffPage() {
           </tr>
         </tfoot>
       </table>
+      <ToastNotification
+        operation={toastNotifOperation}
+        entity={"staff"}
+        show={showToastNotif}
+        close={() => setShowToastNotif(false)}
+      />
     </main>
   );
 }

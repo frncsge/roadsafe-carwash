@@ -359,9 +359,10 @@ passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
       //get the admin with the same username inputed.
-      const result = await pool.query("SELECT * FROM admin WHERE username = $1", [
-        username,
-      ]);
+      const result = await pool.query(
+        "SELECT * FROM admin WHERE username = $1",
+        [username]
+      );
 
       //check if admin did not get retrieved.
       if (result.rows.length === 0) {
