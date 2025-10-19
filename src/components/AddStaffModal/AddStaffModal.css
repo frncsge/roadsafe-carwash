@@ -23,7 +23,7 @@
 
 #add-staff-form label {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .add-staff-modal-input-section {
@@ -77,6 +77,36 @@
 
 #add-staff-form-button-container button:active {
   background-color: #c6c6c6b9;
+}
+
+#add-staff-form span {
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+#add-staff-form p {
+  font-size: 0.8rem;
+  margin: 0;
+  margin-bottom: 1.5rem;
+  color: #bababa;
+}
+
+#add-staff-form .icon {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  box-shadow: -1px 1px 3px 1px rgba(141, 141, 141, 0.35);
+  width: fit-content;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  background-color: #d00909;
+}
+
+#add-staff-form .add-staff-modal-title {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  gap: 0.8rem;
 }
 
 @media (hover: hover) {

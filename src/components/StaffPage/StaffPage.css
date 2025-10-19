@@ -61,9 +61,9 @@
   cursor: pointer;
 }
 
- #staff-page #add-staff-button:active {
-    background-color: rgb(20, 183, 20);
-  }
+#staff-page #add-staff-button:active {
+  background-color: rgb(20, 183, 20);
+}
 
 @media (hover: hover) {
   #staff-page #add-staff-button:hover {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { HiMiniUserGroup } from "react-icons/hi2";
 
 function AddStaffModal({ confirmAdd }) {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -57,6 +58,17 @@ function AddStaffModal({ confirmAdd }) {
   return (
     <div id="add-staff-modal-backdrop">
       <form id="add-staff-form" onSubmit={handleFormSubmit}>
+        <div className="add-staff-modal-title">
+          <section className="add-staff-modal-title-section">
+            <div className="icon">
+              <HiMiniUserGroup color="white"/>
+            </div>
+          </section>
+          <section className="add-staff-modal-title-section">
+            <span>Add New Staff</span>
+            <p>Enter new staff information</p>
+          </section>
+        </div>
         <section className="add-staff-modal-input-section">
           <div className="add-staff-modal-input-group">
             <label htmlFor="first-name">First Name</label>
