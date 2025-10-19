@@ -20,6 +20,14 @@ function AddStaffModal({ confirmAdd }) {
     if (inputType === "status") setStatus(newInputValue);
   }
 
+  function capitalizeLetter(string) {
+    return string
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
   async function handleFormSubmit(e) {
     e.preventDefault();
 
@@ -30,8 +38,8 @@ function AddStaffModal({ confirmAdd }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
+          first_name: capitalizeLetter(firstName),
+          last_name: capitalizeLetter(lastName),
           phone_number: phoneNumber,
           status,
         }),
@@ -49,41 +57,60 @@ function AddStaffModal({ confirmAdd }) {
   return (
     <div id="add-staff-modal-backdrop">
       <form id="add-staff-form" onSubmit={handleFormSubmit}>
-        <label htmlFor="first-name">First Name</label>
-        <input
-          onChange={handleInput}
-          type="text"
-          name="first_name"
-          id="first-name"
-          placeholder="Juan"
-          required
-          value={firstName}
-        />
-        <label htmlFor="last-name">Last Name</label>
-        <input
-          onChange={handleInput}
-          type="text"
-          name="last_name"
-          id="last-name"
-          placeholder="Dela Cruz"
-          required
-          value={lastName}
-        />
-        <label htmlFor="phone-number">Phone</label>
-        <input
-          onChange={handleInput}
-          type="text"
-          name="phone_number"
-          id="phone-number"
-          placeholder="ex. 09606121936"
-          required
-          value={phoneNumber}
-        />
-        <label htmlFor="status">Status</label>
-        <select name="status" id="status" onChange={handleInput} value={status}>
-          <option value="Available">Available</option>
-          <option value="Off-Duty">Off-Duty</option>
-        </select>
+        <section className="add-staff-modal-input-section">
+          <div className="add-staff-modal-input-group">
+            <label htmlFor="first-name">First Name</label>
+            <input
+              onChange={handleInput}
+              type="text"
+              name="first_name"
+              id="first-name"
+              placeholder="Juan"
+              required
+              value={firstName}
+            />
+          </div>
+          <div className="add-staff-modal-input-group">
+            <label htmlFor="last-name">Last Name</label>
+            <input
+              onChange={handleInput}
+              type="text"
+              name="last_name"
+              id="last-name"
+              placeholder="Dela Cruz"
+              required
+              value={lastName}
+            />
+          </div>
+        </section>
+        <section className="add-staff-modal-input-section">
+          <div className="add-staff-modal-input-group">
+            <label htmlFor="phone-number">Phone</label>
+            <input
+              onChange={handleInput}
+              type="text"
+              name="phone_number"
+              id="phone-number"
+              placeholder="ex. 09606121936"
+              required
+              value={phoneNumber}
+              pattern="^09[0-9]{9}$"
+              title="Phone number must start with 09 and be exactly 11 digits"
+            />
+          </div>
+          <div className="add-staff-modal-input-group">
+            <label htmlFor="status">Status</label>
+            <select
+              name="status"
+              id="status"
+              onChange={handleInput}
+              value={status}
+            >
+              <option value="Available">Available</option>
+              <option value="Off-Duty">Off-Duty</option>
+            </select>
+          </div>
+        </section>
         <div id="add-staff-form-button-container">
           <button
             id="close-add-staff-modal-button"

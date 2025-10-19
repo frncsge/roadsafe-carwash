@@ -17,6 +17,74 @@
   border-radius: 5px;
   padding: 1rem;
   flex-direction: column;
-  max-width: 300px;
-  width: 90%;
+  width: fit-content;
+  font-family: "Roboto", sans-serif;
+}
+
+#add-staff-form label {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.add-staff-modal-input-section {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  flex-direction: row;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.add-staff-modal-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-staff-modal-input-group input,
+.add-staff-modal-input-group select {
+  padding: 0.6rem;
+  border: 1px solid #bababa;
+  border-radius: 5px;
+}
+
+#add-staff-form-button-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+#add-staff-form-button-container button,
+#add-staff-form-button-container input {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #dededeb9;
+}
+
+#add-staff-form-button-container button {
+  background-color: #dededeb9;
+}
+
+#add-staff-form-button-container input {
+  background-color: rgb(24, 202, 24);
+  color: white;
+}
+
+#add-staff-form-button-container input:active {
+  background-color: rgb(20, 183, 20);
+}
+
+#add-staff-form-button-container button:active {
+  background-color: #c6c6c6b9;
+}
+
+@media (hover: hover) {
+  #add-staff-form-button-container input:hover {
+    background-color: rgb(20, 183, 20);
+  }
+
+  #add-staff-form-button-container button:hover {
+  background-color: #c6c6c6b9;
+}
 }
