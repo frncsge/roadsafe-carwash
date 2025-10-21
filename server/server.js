@@ -348,6 +348,10 @@ app.delete("/api/staff/:id", async (req, res) => {
       res.sendStatus(200);
     } catch (error) {
       console.error("Error DELETE operation for staff. Message:", error);
+      if (error.code === "23503") {
+        //status code 409 for constraint violation
+        return res.status(409).json({ message: "Staff table fk constraint." });
+      }
       res.sendStatus(500);
     }
   } else {
