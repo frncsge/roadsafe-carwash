@@ -1,5 +1,5 @@
 #toast-notif {
-    max-width: 200px;
+    max-width: 300px;
     width: 60%;
     font-family: "Roboto", sans-serif;
     font-size: 0.9rem;  
@@ -9,12 +9,12 @@
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     padding: 0.5rem;;
 
     position: fixed;
     top: 85%;
-    left: 82%;
+    left: 76%;
     transform: translateX(130%);
     opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease;
