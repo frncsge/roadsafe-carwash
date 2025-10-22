@@ -14,11 +14,7 @@ function StaffPage() {
   const [staffToDelete, setStaffToDelete] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
-  const [toast, setToast] = useState({
-    operation: "",
-    show: false,
-    error: null,
-  });
+  const [toasts, setToasts] = useState([]);
 
   async function fetchStaff() {
     try {
@@ -64,6 +60,7 @@ function StaffPage() {
 
     if (isConfirmed) {
       try {
+        //delete staff
         const response = await fetch(
           API_URL + "/api/staff/" + staffToDelete.staff_id,
           {
@@ -73,44 +70,17 @@ function StaffPage() {
         );
 
         if (response.ok) {
+          //update staff state to exclude deleted staff
           setStaff((prevStaff) => {
             return prevStaff.filter((staff) => {
               return staff.staff_id !== staffToDelete.staff_id;
             });
           });
 
-          setToast((prevToast) => ({
-            ...prevToast,
-            operation: "delete",
-            show: true,
-          }));
-
-          //remove notif after 5 secs
-          setTimeout(() => {
-            setToast((prevToast) => ({
-              ...prevToast,
-              show: false,
-            }));
-          }, 5000);
-
-          console.log("Delete successful.");
+          showToast("delete", null);
         } else if (response.status === 409) {
           //if error like fk constraint
-          setToast((prevToast) => ({
-            ...prevToast,
-            operation: "delete",
-            show: true,
-            error: true,
-          }));
-
-          //remove notif after 5 secs
-          setTimeout(() => {
-            setToast((prevToast) => ({
-              ...prevToast,
-              show: false,
-              error: null,
-            }));
-          }, 8000);
+          showToast("delete", true);
         }
       } catch (error) {
         console.error(error);
@@ -127,24 +97,67 @@ function StaffPage() {
 
     if (isConfirmed) {
       fetchStaff();
-
       //show toast if staff is not null
       if (staff) {
-        setToast((prevToast) => ({
-          ...prevToast,
-          operation: "add",
-          show: true,
-        }));
-
-        //remove notif after 5 secs
-        setTimeout(() => {
-          setToast((prevToast) => ({
-            ...prevToast,
-            show: false,
-          }));
-        }, 5000);
+        showToast("add", null);
       }
     }
+  }
+
+  function showToast(operation, error) {
+    const toastId = Date.now();
+    const newToast = {
+      toastId,
+      operation,
+      error,
+      show: true,
+    };
+
+    setToasts((prevToasts) => [...prevToasts, newToast]);
+
+    closeToast(toastId, error, false);
+  }
+
+  function closeToast(toastId, error, immediate) {
+    //set show to false first before removing entirely from the DOM to make the out animation visible
+    if (immediate) {
+      setToasts((prevToasts) => {
+        return prevToasts.map((prevToast) => {
+          return prevToast.toastId === toastId
+            ? { ...prevToast, show: false }
+            : prevToast;
+        });
+      });
+
+      //remove from the DOM after 0.5 seconds based on the transition/animation from the css file...
+      setTimeout(() => {
+        setToasts((prevToasts) => {
+          return prevToasts.filter((prevToast) => prevToast.toastId != toastId);
+        });
+      }, 500);
+
+      return;
+    }
+
+    setTimeout(
+      () => {
+        setToasts((prevToasts) => {
+          return prevToasts.map((prevToast) => {
+            return prevToast.toastId === toastId
+              ? { ...prevToast, show: false }
+              : prevToast;
+          });
+        });
+      },
+      error ? 8000 : 5000
+    );
+
+    //remove from the DOM after 8 or 5 seconds...
+    setTimeout(() => {
+      setToasts((prevToasts) => {
+        return prevToasts.filter((prevToast) => prevToast.toastId != toastId);
+      });
+    }, (error ? 8000 : 5000) + 500);
   }
 
   return (
@@ -202,20 +215,22 @@ function StaffPage() {
           </tr>
         </tfoot>
       </table>
-      <ToastNotification
-        operation={toast.operation}
-        entity={"staff"}
-        show={toast.show}
-        close={() => {
-          setToast((prevToast) => ({
-            ...prevToast,
-            show: false,
-          }));
-
-          return toast.show;
-        }}
-        error={toast.error}
-      />
+      <div id="toast-notif-container">
+        {toasts.map((toast) => {
+          return (
+            <ToastNotification
+              key={toast.toastId}
+              operation={toast.operation}
+              entity={"staff"}
+              show={toast.show}
+              close={() => {
+                closeToast(toast.toastId, toast.error, true);
+              }}
+              error={toast.error}
+            />
+          );
+        })}
+      </div>
     </main>
   );
 }

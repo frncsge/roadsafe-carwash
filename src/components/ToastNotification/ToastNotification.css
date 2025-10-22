@@ -1,21 +1,31 @@
-#toast-notif {
+#toast-notif-container {
     max-width: 300px;
     width: 60%;
+    /* border: 1px solid pink; */
+    position: fixed;
+    top: 90%;
+    left: 93%;
+    transform: translate(-90%, -90%);
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+#toast-notif {
+    width: fit-content;
     font-family: "Roboto", sans-serif;
     font-size: 0.9rem;  
-    background-color: rgba(24, 202, 24, 0.426);
-    border: 1px solid rgb(24, 202, 24);
     border-radius: 5px;
 
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: 0.5rem;;
 
-    position: fixed;
-    top: 85%;
-    left: 76%;
-    transform: translateX(130%);
+    transform: translateX(100%);
     opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease;
 }
@@ -31,4 +41,5 @@
 
 .toast-notif-close-button {
     cursor: pointer;
+    flex-shrink: 0;
 }
